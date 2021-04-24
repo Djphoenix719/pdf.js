@@ -90,11 +90,12 @@ function getViewerConfiguration() {
       zoomIn: document.getElementById("zoomIn"),
       zoomOut: document.getElementById("zoomOut"),
       viewFind: document.getElementById("viewFind"),
-      openFile: document.getElementById("openFile"),
-      print: document.getElementById("print"),
-      presentationModeButton: document.getElementById("presentationMode"),
-      download: document.getElementById("download"),
-      viewBookmark: document.getElementById("viewBookmark"),
+      // CHANGE: Rebind some buttons to a dummy to prevent use in FVTT.
+      openFile: document.getElementById("fvtt-dummybutton"),
+      print: document.getElementById("fvtt-dummybutton"),
+      presentationModeButton: document.getElementById("fvtt-dummybutton"),
+      download: document.getElementById("fvtt-dummybutton"),
+      viewBookmark: document.getElementById("fvtt-dummybutton"),
     },
     secondaryToolbar: {
       toolbar: document.getElementById("secondaryToolbar"),
@@ -102,12 +103,11 @@ function getViewerConfiguration() {
       toolbarButtonContainer: document.getElementById(
         "secondaryToolbarButtonContainer"
       ),
-      presentationModeButton: document.getElementById(
-        "secondaryPresentationMode"
-      ),
-      openFileButton: document.getElementById("secondaryOpenFile"),
-      printButton: document.getElementById("secondaryPrint"),
-      downloadButton: document.getElementById("secondaryDownload"),
+      // CHANGE: Rebind some buttons to a dummy to prevent use in FVTT.
+      presentationModeButton: document.getElementById("fvtt-dummybutton"),
+      openFileButton: document.getElementById("fvtt-dummybutton"),
+      printButton: document.getElementById("fvtt-dummybutton"),
+      downloadButton: document.getElementById("fvtt-dummybutton"),
       viewBookmarkButton: document.getElementById("secondaryViewBookmark"),
       firstPageButton: document.getElementById("firstPage"),
       lastPageButton: document.getElementById("lastPage"),

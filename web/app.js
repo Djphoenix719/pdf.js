@@ -810,7 +810,8 @@ const PDFViewerApplication = {
     ) {
       try {
         // Trigger saving, to prevent data loss in forms; see issue 12257.
-        await this.save({ sourceEventType: "save" });
+        // CHANGE: DISABLED IN FVTT
+        // await this.save({ sourceEventType: "save" });
       } catch (reason) {
         // Ignoring errors, to ensure that document closing won't break.
       }

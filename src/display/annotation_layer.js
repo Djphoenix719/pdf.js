@@ -31,6 +31,7 @@ import {
 } from "../shared/util.js";
 import { AnnotationStorage } from "./annotation_storage.js";
 import { ColorConverters } from "../shared/scripting_utils.js";
+import { AppOptions } from "../../web/app_options.js";
 
 /**
  * @typedef {Object} AnnotationElementParameters
@@ -859,7 +860,9 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
         element.addEventListener("blur", blurListener);
       }
 
-      element.disabled = this.data.readOnly;
+      if (AppOptions.get("enableScripting")) {
+        element.disabled = this.data.readOnly;
+      }
       element.name = this.data.fieldName;
 
       if (this.data.maxLen !== null) {

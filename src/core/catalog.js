@@ -14,23 +14,6 @@
  */
 
 import {
-  bytesToString,
-  createPromiseCapability,
-  createValidAbsoluteUrl,
-  DocumentActionEventType,
-  FormatError,
-  info,
-  isBool,
-  isNum,
-  isString,
-  objectSize,
-  PermissionFlag,
-  shadow,
-  stringToPDFString,
-  stringToUTF8String,
-  warn,
-} from "../shared/util.js";
-import {
   clearPrimitiveCaches,
   Dict,
   isDict,
@@ -46,6 +29,22 @@ import {
   MissingDataException,
   toRomanNumerals,
 } from "./core_utils.js";
+import {
+  createPromiseCapability,
+  createValidAbsoluteUrl,
+  DocumentActionEventType,
+  FormatError,
+  info,
+  isBool,
+  isNum,
+  isString,
+  objectSize,
+  PermissionFlag,
+  shadow,
+  stringToPDFString,
+  stringToUTF8String,
+  warn,
+} from "../shared/util.js";
 import { NameTree, NumberTree } from "./name_number_tree.js";
 import { ColorSpace } from "./colorspace.js";
 import { FileSpec } from "./file_spec.js";
@@ -71,6 +70,7 @@ class Catalog {
     this.builtInCMapCache = new Map();
     this.globalImageCache = new GlobalImageCache();
     this.pageKidsCountCache = new RefSetCache();
+    this.pageIndexCache = new RefSetCache();
     this.nonBlendModesSet = new RefSet();
   }
 
@@ -136,7 +136,7 @@ class Catalog {
         // charsets, let's just hope that the author of the PDF was reasonable
         // enough to stick with the XML default charset, which is UTF-8.
         try {
-          const data = stringToUTF8String(bytesToString(stream.getBytes()));
+          const data = stringToUTF8String(stream.getString());
           if (data) {
             metadata = new MetadataParser(data).serializable;
           }
@@ -906,7 +906,7 @@ class Catalog {
 
       let js = jsDict.get("JS");
       if (isStream(js)) {
-        js = bytesToString(js.getBytes());
+        js = js.getString();
       } else if (typeof js !== "string") {
         return;
       }
@@ -984,6 +984,7 @@ class Catalog {
     clearPrimitiveCaches();
     this.globalImageCache.clear(/* onlyData = */ manuallyTriggered);
     this.pageKidsCountCache.clear();
+    this.pageIndexCache.clear();
     this.nonBlendModesSet.clear();
 
     const promises = [];
@@ -1113,6 +1114,11 @@ class Catalog {
   }
 
   getPageIndex(pageRef) {
+    const cachedPageIndex = this.pageIndexCache.get(pageRef);
+    if (cachedPageIndex !== undefined) {
+      return Promise.resolve(cachedPageIndex);
+    }
+
     // The page tree nodes have the count of all the leaves below them. To get
     // how many pages are before we just have to walk up the tree and keep
     // adding the count of siblings to the left of the node.
@@ -1192,16 +1198,16 @@ class Catalog {
     }
 
     let total = 0;
-    function next(ref) {
-      return pagesBeforeRef(ref).then(function (args) {
+    const next = ref =>
+      pagesBeforeRef(ref).then(args => {
         if (!args) {
+          this.pageIndexCache.put(pageRef, total);
           return total;
         }
         const [count, parentRef] = args;
         total += count;
         return next(parentRef);
       });
-    }
 
     return next(pageRef);
   }
@@ -1344,7 +1350,7 @@ class Catalog {
           let js;
 
           if (isStream(jsAction)) {
-            js = bytesToString(jsAction.getBytes());
+            js = jsAction.getString();
           } else if (isString(jsAction)) {
             js = jsAction;
           }

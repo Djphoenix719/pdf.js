@@ -181,6 +181,7 @@
 !images_1bit_grayscale.pdf
 !issue5280.pdf
 !issue12399_reduced.pdf
+!annotation-ink-without-appearance.pdf
 !issue5677.pdf
 !issue5954.pdf
 !issue6612.pdf
@@ -246,6 +247,7 @@
 !S2.pdf
 !glyph_accent.pdf
 !personwithdog.pdf
+!find_all.pdf
 !helloworld-bad.pdf
 !zerowidthline.pdf
 !js-colors.pdf
@@ -401,6 +403,7 @@
 !issue12418_reduced.pdf
 !annotation-freetext.pdf
 !annotation-line.pdf
+!evaljs.pdf
 !annotation-line-without-appearance.pdf
 !bug1669099.pdf
 !annotation-square-circle.pdf
@@ -411,6 +414,7 @@
 !annotation-choice-widget.pdf
 !annotation-button-widget.pdf
 !annotation-polyline-polygon.pdf
+!annotation-polyline-polygon-without-appearance.pdf
 !zero_descent.pdf
 !operator-in-TJ-array.pdf
 !issue7878.pdf

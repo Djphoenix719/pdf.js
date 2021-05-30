@@ -33,8 +33,9 @@ const defaultOptions = {
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE,
   },
   defaultUrl: {
+    // TODO: Set default value to a "PDFoundry" splash
     /** @type {string} */
-    value: "compressed.tracemonkey-pldi-09.pdf",
+    value: "", // CHANGE: removed default value
     kind: OptionKind.VIEWER,
   },
   defaultZoomValue: {

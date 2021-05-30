@@ -876,6 +876,15 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
         element.classList.add("comb");
         element.style.letterSpacing = `calc(${combWidth}px - 1ch)`;
       }
+
+      // CHANGE: Reduce padding on fields
+      element.style.padding = "0px";
+
+      // CHANGED: Wrap all inputs in an autocomplete disabled form
+      const form = document.createElement("form");
+      form.setAttribute("autocomplete", "off");
+      form.appendChild(element);
+      element = form;
     } else {
       element = document.createElement("div");
       element.textContent = this.data.fieldValue;
